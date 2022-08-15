@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 export function GamePage() {
   const moveLeft = (left) => {
@@ -62,6 +62,8 @@ export function GamePage() {
       if (enemyTop >= 460) {
         clearInterval(moveEnemy);
         enemies = [];
+        alert("Game Over");
+        window.location.reload();
       }
     }
   }, 500);
