@@ -1,51 +1,93 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export function GamePage() {
+  const moveLeft = (left) => {
+    if (left > 0) player.style.left = left - 10 + "px";
+  };
+
+  const moveRight = (left) => {
+    if (left <= 460) player.style.left = left + 10 + "px";
+  };
+
+  const shoot = (gameScreen, left) => {
+    var bullet = document.createElement("div");
+    bullet.classList.add("bullet");
+    bullet.style.left = left + "px";
+    gameScreen.appendChild(bullet);
+
+    //makes the bullet movement to the top
+    var moveBullet = setInterval(() => {
+      var bulletBottom = parseInt(
+        window.getComputedStyle(bullet).getPropertyValue("bottom")
+      );
+
+      bullet.style.bottom = bulletBottom + 500 + "px";
+
+      if (bulletBottom >= 500) {
+        clearInterval(moveBullet);
+      }
+
+      bullet.style.left = left + "px";
+      bullet.style.bottom = bulletBottom + 3 + "px";
+    });
+  };
+
+  var generateEnemies = setInterval(() => {
+    console.log("generateEnemies");
+    var enemy = document.createElement("div");
+    enemy.classList.add("enemy");
+
+    //sets the horizontal position to the enemy apper
+    enemy.style.left = Math.floor(Math.random() * 460) + "px";
+    enemy.style.top = "5px";
+    document.getElementById("screen").appendChild(enemy);
+
+    //stop the creation of enemies
+    var enemies = document.getElementsByClassName("enemy");
+    if (enemies.length > 10) {
+      clearInterval(generateEnemies);
+    }
+  }, 1000);
+
+  //makes the enemy movement to the bottom
+  var moveEnemy = setInterval(() => {
+    var enemies = document.getElementsByClassName("enemy");
+    for (var i = 0; i < enemies.length; i++) {
+      var enemy = enemies[i];
+      var enemyTop = parseInt(
+        window.getComputedStyle(enemy).getPropertyValue("top")
+      );
+      enemy.style.top = enemyTop + 10 + "px";
+
+      if (enemyTop >= 460) {
+        clearInterval(moveEnemy);
+        enemies = [];
+      }
+    }
+  }, 500);
+
   document.addEventListener("keydown", (e) => {
     const player = document.getElementById("player");
     const gameScreen = document.getElementById("screen");
     const left = parseInt(
       window.getComputedStyle(player, null).getPropertyValue("left")
     );
-    console.log(e.key);
     switch (e.key) {
-      case "ArrowLeft" && left > 0:
-        player.style.left = left - 10 + "px";
+      case "ArrowLeft":
+        moveLeft(left);
         break;
-      case "ArrowRight" && left <= 460:
-        player.style.left = left + 10 + "px";
+      case "ArrowRight":
+        moveRight(left);
         break;
-      case "ArrowUp" || e.key.code == 32:
-        var bullet = document.createElement("div");
-        bullet.classList.add("bullet");
-        gameScreen.appendChild(bullet);
-
-        const moveBullet = setInterval(() => {
-          var enemies = document.getElementsByClassName("enemy");
-
-          // enemies?.map((enemy) => {
-          //   if (enemy != undefined) {
-          //     var enemybound = enemy.getBoundingClientRect();
-          //     var bulletbound = bullet.getBoundingClientRect();
-
-          //     if (
-          //       bulletbound.left >= enemybound.left &&
-          //       bulletbound.right <= enemybound.right &&
-          //       bulletbound.top <= enemybound.top &&
-          //       bulletbound.bottom <= enemybound.bottom
-          //     ) {
-          //       enemy.parentElement.removeChild(enemy);
-          //     }
-          //   }
-          // });
-        });
+      case "ArrowUp":
+        shoot(gameScreen, left);
+        break;
     }
   });
 
   return (
     <div className="gamePage">
       <div id="screen">
-        <div className="enemies"></div>
         <div id="player"></div>
       </div>
     </div>

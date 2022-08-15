@@ -24,7 +24,7 @@ body {
   width: 500px;
   height: 500px;
   margin: 40px auto;
-  border: 2px solid white;
+  border: 2px solid #FFE6E6;
   background-color: black;
   overflow: hidden;
 }
@@ -33,13 +33,30 @@ body {
   position: absolute;
   width: 40px;
   height: 40px;
-  background: url(../assets/player.png);
+  background: url('../assets/player.png');
   background-size: contain;
   background-repeat: no-repeat;
   left: 50%;
   bottom: 0px;
 }
 
-.enemies{}
+.bullet {
+  position: absolute;
+  bottom: 40px;
+  left: 51.5%;
+  width: 20px;
+  height: 20px;
+  background: url('../assets/bullet.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 
-.bullet {}
+.enemy{
+  position: absolute;
+  top: 0px;
+  width: 50px;
+  height: 50px;
+  background: url("../assets/enemy.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
