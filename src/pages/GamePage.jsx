@@ -17,6 +17,25 @@ export function GamePage() {
 
     //makes the bullet movement to the top
     var moveBullet = setInterval(() => {
+      var enemies = document.getElementsByClassName("enemy");
+      for (var i = 0; i < enemies.length; i++) {
+        var enemy = enemies[i];
+        if (enemy != undefined) {
+          var enemyBound = enemy.getBoundingClientRect();
+          var bulletBound = bullet.getBoundingClientRect();
+          if (
+            bulletBound.left >= enemyBound.left &&
+            bulletBound.right <= enemyBound.right &&
+            bulletBound.top <= enemyBound.top &&
+            bulletBound.bottom <= enemyBound.bottom
+          ) {
+            enemy.parentElement.removeChild(enemy); //Just removing that particular rock;
+            //Scoreboard
+            document.getElementById("score").innerHTML =
+              parseInt(document.getElementById("score").innerHTML) + 1;
+          }
+        }
+      }
       var bulletBottom = parseInt(
         window.getComputedStyle(bullet).getPropertyValue("bottom")
       );
@@ -41,12 +60,6 @@ export function GamePage() {
     enemy.style.left = Math.floor(Math.random() * 460) + "px";
     enemy.style.top = "5px";
     document.getElementById("screen").appendChild(enemy);
-
-    //stop the creation of enemies
-    var enemies = document.getElementsByClassName("enemy");
-    if (enemies.length > 10) {
-      clearInterval(generateEnemies);
-    }
   }, 1000);
 
   //makes the enemy movement to the bottom
@@ -89,6 +102,7 @@ export function GamePage() {
 
   return (
     <div className="gamePage">
+      <div id="score">0</div>
       <div id="screen">
         <div id="player"></div>
       </div>
