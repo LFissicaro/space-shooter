@@ -60,3 +60,11 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
 }
+
+#score {
+  font-size: 100px;
+  position: absolute;
+  color: white;
+  top: 250px;
+  left: 50px;
+}
